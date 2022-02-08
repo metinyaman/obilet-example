@@ -1,0 +1,54 @@
+﻿@model List<OBilet.Web.Models.JourneyIndexViewModel>
+
+@{
+    <div class="text-white" style="height: 75px; background: #2F4EB4">
+        <div class="back-icon">
+            <i 
+                id="back" 
+                class="fas fa-arrow-left mx-3 pt-3"
+                onclick="location.href = '@Url.Action("Index", "OBilet")'"
+            ></i>
+        </div>
+        <div class="d-flex flex-column text-center pt-2">
+            <p class="mb-1"> @ViewBag.OriginLocation - @ViewBag.DestinationLocation </p>
+            <p> @ViewBag.DateInfo </p>
+        </div>
+    </div>
+
+    if (@Model?.Count > 0)
+    {
+        <div class="py-1" style="background: #F3F3F3">
+            @foreach (var journey in Model)
+            {
+                <div class="border py-2 m-2" style="border-color: #B4B4B4">
+                    <div class="d-flex w-100">
+                        <div class="d-flex w-75">
+                            <div class="d-flex flex-column text-center mx-2 journey-date-info" style="width: 50px">
+                                <label class="d-block">Kalkış</label>
+                                <span> @journey.Departure.ToString("hh:mm")</span>
+                            </div>
+                            <i class="fas fa-arrow-right mt-3"> </i>
+                            <div class="d-flex flex-column text-center mx-2 journey-date-info" style="width: 50px">
+                                <label class="d-block">Varış</label>
+                                <span> @journey.Arrival.ToString("hh:mm")</span>
+                            </div>
+                        </div>
+                        <div class="w-25 text-end">
+                            <button 
+                                class="btn btn-danger text-end me-3" 
+                                style="font-size: 13px" 
+                                onclick="location.href = '@Url.Action("RedirectOBiletDetailPage", "OBilet", journey)'"
+                            > 75,00 TL </button>                    
+                        </div>
+                    </div>
+                    <div class="mx-3 journey-location-info">
+                        <span> @journey.Origin </span>
+                        <span class="mx-1">-</span>
+                        <span> @journey.Destination </span>
+                    </div>
+                </div>
+            }
+
+        </div>
+    }
+}
