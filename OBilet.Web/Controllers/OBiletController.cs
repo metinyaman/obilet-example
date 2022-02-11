@@ -8,7 +8,6 @@ using OBilet.Core.Sessions;
 using OBilet.Web.Models;
 using UAParser;
 
-
 namespace OBilet.Web.Controllers
 {
     public class OBiletController : Controller
@@ -19,9 +18,9 @@ namespace OBilet.Web.Controllers
         private readonly IBusLocationService _busLocationService;
         private readonly IBusJourneyService _busJourneyService;
 
-        public const string SessionKeySessionId = "_SessionId";
-        public const string SessionKeyDeviceId = "_DeviceId";
-        public const string SessionKeyLastSearch = "_OriginId";
+        private const string SessionKeySessionId = "_SessionId";
+        private const string SessionKeyDeviceId = "_DeviceId";
+        private const string SessionKeyLastSearch = "_OriginId";
 
         #endregion
 
@@ -44,7 +43,8 @@ namespace OBilet.Web.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            await CreateSession();
+            if (HttpContext.Session.GetString(SessionKeySessionId) == null)
+                await CreateSession();
 
             var viewModel = await GetIndexViewModel();
 
@@ -80,8 +80,8 @@ namespace OBilet.Web.Controllers
 
         #endregion
 
-
-        #region API Operation
+        
+        #region API Operations
 
         private async Task CreateSession()
         {
@@ -113,7 +113,7 @@ namespace OBilet.Web.Controllers
             }
         }
 
-        private async Task<List<BusJourney>> GetBusJourneyList(int originId,int destinationId, DateTime departureDate)
+        private async Task<List<BusJourney>> GetBusJourneyList(int originId, int destinationId, DateTime departureDate)
         {
             var request = new GetBusJourneyRequest()
             {
@@ -181,6 +181,8 @@ namespace OBilet.Web.Controllers
 
                 var busLocations = await _busLocationService.GetBusLocations(request);
 
+                if (busLocations.Count <= 2) return new IndexViewModel() { DepartureDate = DateTime.Now };
+
                 viewModel = new IndexViewModel()
                 {
                     OriginId = busLocations[0].Id,
@@ -206,7 +208,7 @@ namespace OBilet.Web.Controllers
             ViewBag.DestinationLocation = viewModel.DestinationName!;
             ViewBag.DateInfo = DateInfo(viewModel.DepartureDate);
 
-            var journeys = await GetBusJourneyList(viewModel.OriginId,viewModel.DestinationId,viewModel.DepartureDate);
+            var journeys = await GetBusJourneyList(viewModel.OriginId, viewModel.DestinationId, viewModel.DepartureDate);
 
             var viewModelList = journeys.Select(r =>
                 {
@@ -218,35 +220,13 @@ namespace OBilet.Web.Controllers
                         Origin = r.Journey.Origin,
                         Destination = r.Journey.Destination,
                         OriginLocationId = r.OriginLocationId,
-                        OriginLocation = r.OriginLocation,
                         DestinationLocationId = r.DestinationLocationId,
-                        DestinationLocation = r.DestinationLocation,
-                        DateInfo = DateInfo(r.Journey.Departure),
                         Id = r.Id
                     };
                 })
                 .ToList();
 
             return viewModelList!;
-        }
-
-        public async Task<IActionResult> Change()
-        {
-            var viewModel =
-                JsonSerializer.Deserialize<IndexViewModel>(HttpContext.Session.GetString(SessionKeyLastSearch)!);
-
-            var newViewModel = new IndexViewModel()
-            {
-                OriginId = viewModel!.DestinationId,
-                OriginName = viewModel.DestinationName,
-                DestinationId = viewModel.OriginId,
-                DestinationName = viewModel.OriginName,
-                DepartureDate = viewModel.DepartureDate
-            };
-
-            HttpContext.Session.SetString(SessionKeyLastSearch, JsonSerializer.Serialize(newViewModel));
-
-            return await Task.FromResult(RedirectToAction("Index"));
         }
 
         public async Task<JsonResult> AutoComplete(string prefix)
@@ -260,6 +240,19 @@ namespace OBilet.Web.Controllers
             return Json(locations);
         }
 
+        public JsonResult Change(IndexViewModel viewModel)
+        {
+            var newViewModel = new IndexViewModel()
+            {
+                OriginId = viewModel!.DestinationId,
+                OriginName = viewModel.DestinationName,
+                DestinationId = viewModel.OriginId,
+                DestinationName = viewModel.OriginName
+            };
+
+            return Json(newViewModel);
+        }
+
         public void RedirectOBiletDetailPage(JourneyIndexViewModel data)
         {
             var url =
@@ -269,7 +262,7 @@ namespace OBilet.Web.Controllers
             Response.Redirect(url);
         }
 
-        private static string DateInfo(DateTime dateValue)
+        public static string DateInfo(DateTime dateValue)
         {
             var dayNumber = dateValue.Day;
             var month = dateValue.ToString("MMMM", new CultureInfo("tr-TR"));
@@ -291,6 +284,6 @@ namespace OBilet.Web.Controllers
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
 
-        #endregion
+        #endregion 
     }
 }

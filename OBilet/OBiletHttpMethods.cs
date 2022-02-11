@@ -7,7 +7,7 @@ namespace OBilet
 {
     public class OBiletHttpMethods
     {
-        public static async Task<string> Post(string url, object? request)
+        public static async Task<string> Post(string url, object request)
         {
             var client = new HttpClient { BaseAddress = new Uri(Endpoints.BaseUrl) };
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));

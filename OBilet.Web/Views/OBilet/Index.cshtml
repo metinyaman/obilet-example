@@ -3,33 +3,20 @@
 <div style="height: 40px; background: #2F4EB4"></div>
 <form asp-action="JourneyIndex" method="post">
     <div class="d-flex flex-column px-3 bg-light">
-        @Html.ValidationSummary(true) 
-        
-        
-
         <div class="d-flex flex-column mx-3 mt-3 mb-1 bg-white">
             <label class="mylabel w-100 px-3">Nereye</label>
-            <input
-                id="originName"
-                type="text"
-                class="w-100 px-3 mytextbox"
-                name="OriginName"
-                value="@Model!.OriginName"
-                autocomplete="off"
-                required/>
-            <input
-                id="originId"
-                class="w-100 px-3 mytextbox"
-                type="number"
-                name="originId"
-                value="@Model.OriginId"
-                hidden/>
+            <input id="originName"
+                   type="text"
+                   class="w-100 px-3 mytextbox"
+                   name="OriginName"
+                   value="@Model!.OriginName"
+                   autocomplete="off"
+                   required />
+            <input type="number" id="originId" name="originId" value="@Model.OriginId"
+                   hidden />
         </div>
 
-        <button
-            class="float-end me-5 change-button"
-            type="button"
-            onclick="location.href = '@Url.Action("Change", "OBilet")'">
+        <button id="change" class="float-end me-5 change-button" type="button">
             <div class="change-icon">
                 <i class="p-1 fas fa-exchange-alt"></i>
             </div>
@@ -37,21 +24,14 @@
 
         <div class="d-flex flex-column mx-3 bg-white mb-4">
             <label class="mylabel w-100 px-3">Nereden</label>
-            <input
-                id="destinationName"
-                class="w-100 px-3 mytextbox"
-                type="text"
-                name="DestinationName"
-                value="@Model.DestinationName"
-                autocomplete="off"
-                required/>
-            <input
-                id="destinationId"
-                class="w-100 px-3 mytextbox"
-                type="number"
-                name="DestinationId"
-                value="@Model.DestinationId"
-                hidden/>
+            <input id="destinationName"
+                   class="w-100 px-3 mytextbox"
+                   type="text"
+                   name="DestinationName"
+                   value="@Model.DestinationName"
+                   autocomplete="off"
+                   required />
+            <input id="destinationId" type="number" name="DestinationId" value="@Model.DestinationId" hidden />
         </div>
 
         <div class="d-flex mx-3 py-1 bg-white" style="height: 75px">
@@ -62,32 +42,27 @@
                        class="w-100 px-3 mytextbox"
                        name="DepartureDate"
                        value="@Model.DepartureDate.ToString("yyyy-MM-dd")"
-                       min="@DateTime.Now.ToString("yyyy-MM-dd")"
-                       required/>
+                       min="@DateTime.Now.ToString("yyyy-MM-dd")"                       
+                       required />
             </div>
             <div class="w-25">
                 <div class="d-flex flex-column align-items-center float-end me-3">
-                    <input
-                        id="today"
-                        class="btn-outline-secondary mx-1 mb-1"
-                        style="width: 60px; height: 30px"
-                        type="button"
-                        value="Bugün"/>
-                    <input
-                        id="tomorrow"
-                        class="btn-outline-secondary active mx-1"
-                        style="width: 60px; height: 30px"
-                        type="button"
-                        value="Yarın"/>
+                    <input id="today"
+                           class="date-button btn-outline-secondary mx-1 mb-1"
+                           type="button"
+                           value="Bugün" />
+                    <input id="tomorrow"
+                           class="date-button btn-outline-secondary active mx-1"
+                           type="button"
+                           value="Yarın" />
                 </div>
             </div>
         </div>
         <div class="w-100 my-4 text-center">
-            <input
-                class="text-white w-75"
-                style="height: 41px; background: #2F4EB4"
-                type="submit"
-                value="Bileti Bul"/>
+            <input class="text-white w-75"
+                   style="height: 41px; background: #2F4EB4"
+                   type="submit"
+                   value="Bileti Bul" />
         </div>
     </div>
 </form>

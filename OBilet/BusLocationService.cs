@@ -14,7 +14,7 @@ namespace OBilet
 
             var result = response?.Data?.ToList();
 
-            return await Task.FromResult(result ?? new List<BusLocation>());
+            return result ?? new List<BusLocation>();
         }
     }
 }

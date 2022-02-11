@@ -14,7 +14,7 @@ namespace OBilet
 
             var result = response?.Data?.OrderBy(r => r.Journey?.Departure).ToList();
 
-            return await Task.FromResult(result ?? new List<BusJourney>());
+            return result ?? new List<BusJourney>();
         }
     }
 }

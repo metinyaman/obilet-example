@@ -3,11 +3,9 @@
 @{
     <div class="text-white" style="height: 75px; background: #2F4EB4">
         <div class="back-icon">
-            <i 
-                id="back" 
-                class="fas fa-arrow-left mx-3 pt-3"
-                onclick="location.href = '@Url.Action("Index", "OBilet")'"
-            ></i>
+            <i id="back"
+               class="fas fa-arrow-left mx-3 pt-3"
+               onclick="location.href = '@Url.Action("Index", "OBilet")'"></i>
         </div>
         <div class="d-flex flex-column text-center pt-2">
             <p class="mb-1"> @ViewBag.OriginLocation - @ViewBag.DestinationLocation </p>
@@ -34,11 +32,11 @@
                             </div>
                         </div>
                         <div class="w-25 text-end">
-                            <button 
-                                class="btn btn-danger text-end me-3" 
-                                style="font-size: 13px" 
-                                onclick="location.href = '@Url.Action("RedirectOBiletDetailPage", "OBilet", journey)'"
-                            > 75,00 TL </button>                    
+                            <button class="btn btn-danger me-3"
+                            style="font-size: 13px"
+                            onclick="location.href = '@Url.Action("RedirectOBiletDetailPage", "OBilet", journey)'">
+                                75,00 TL
+                            </button>
                         </div>
                     </div>
                     <div class="mx-3 journey-location-info">
@@ -48,7 +46,6 @@
                     </div>
                 </div>
             }
-
         </div>
     }
 }

@@ -15,8 +15,7 @@ builder.Services.AddControllersWithViews();
 
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
-    options.ForwardedHeaders =
-        ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedFor | ForwardedHeaders.XForwardedProto;
 });
 
 builder.Services.AddSession(opts =>
@@ -34,9 +33,8 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseSession();
-
 app.UseHttpsRedirection();
+
 app.UseStaticFiles();
 
 app.UseRouting();

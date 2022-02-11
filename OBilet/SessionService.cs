@@ -4,7 +4,6 @@ using OBilet.Core.Sessions;
 
 namespace OBilet
 {
-
     public class SessionService : ISessionService
     {
         public async Task<GetSessionResponse?> GetSession(GetSessionRequest request)
